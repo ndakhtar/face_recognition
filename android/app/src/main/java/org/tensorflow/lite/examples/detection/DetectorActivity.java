@@ -232,12 +232,6 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                         cropW, cropH,
                         sensorOrientation, MAINTAIN_ASPECT);
 
-//    frameToCropTransform =
-//            ImageUtils.getTransformationMatrix(
-//                    previewWidth, previewHeight,
-//                    previewWidth, previewHeight,
-//                    sensorOrientation, MAINTAIN_ASPECT);
-
         cropToFrameTransform = new Matrix();
         frameToCropTransform.invert(cropToFrameTransform);
 
@@ -458,9 +452,6 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
         final List<SimilarityClassifier.Recognition> mappedRecognitions =
                 new LinkedList<SimilarityClassifier.Recognition>();
-
-
-        //final List<Classifier.Recognition> results = new ArrayList<>();
 
         // Note this can be done only once
         int sourceW = rgbFrameBitmap.getWidth();

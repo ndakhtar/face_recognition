@@ -291,7 +291,6 @@ public abstract class CameraActivity extends AppCompatActivity
                 new Runnable() {
                     @Override
                     public void run() {
-                        camera.addCallbackBuffer(bytes);
                         isProcessingFrame = false;
                     }
                 };
@@ -525,7 +524,7 @@ public abstract class CameraActivity extends AppCompatActivity
 
         this.cameraId = chooseCamera();
 
-        Fragment fragment;
+        Fragment fragment = null;
         if (useCamera2API) {
             CameraConnectionFragment camera2Fragment =
                     CameraConnectionFragment.newInstance(
@@ -543,16 +542,6 @@ public abstract class CameraActivity extends AppCompatActivity
 
             camera2Fragment.setCamera(cameraId);
             fragment = camera2Fragment;
-
-        } else {
-
-            int facing = (useFacing == CameraCharacteristics.LENS_FACING_BACK) ?
-                    Camera.CameraInfo.CAMERA_FACING_BACK :
-                    Camera.CameraInfo.CAMERA_FACING_FRONT;
-            LegacyCameraConnectionFragment frag = new LegacyCameraConnectionFragment(this,
-                    getLayoutId(),
-                    getDesiredPreviewFrameSize(), facing);
-            fragment = frag;
 
         }
 
