@@ -246,58 +246,6 @@ public abstract class CameraActivity extends AppCompatActivity
     }
 
     /**
-     * Callback for android.hardware.Camera API
-     */
-    @Override
-    public void onPreviewFrame(final byte[] bytes, final Camera camera) {
-        if (isProcessingFrame) {
-            LOGGER.w("Dropping frame!");
-            return;
-        }
-
-        try {
-            // Initialize the storage bitmaps once when the resolution is known.
-            if (rgbBytes == null) {
-                Camera.Size previewSize = camera.getParameters().getPreviewSize();
-                previewHeight = previewSize.height;
-                previewWidth = previewSize.width;
-                //rgbBytes = new int[previewWidth * previewHeight];
-                //onPreviewSizeChosen(new Size(previewSize.width, previewSize.height), 90);
-                rgbBytes = new int[previewWidth * previewHeight];
-                int rotation = 90;
-                if (useFacing == CameraCharacteristics.LENS_FACING_FRONT) {
-                    rotation = 270;
-                }
-                onPreviewSizeChosen(new Size(previewSize.width, previewSize.height), rotation);
-            }
-        } catch (final Exception e) {
-            LOGGER.e(e, "Exception!");
-            return;
-        }
-
-        isProcessingFrame = true;
-        yuvBytes[0] = bytes;
-        yRowStride = previewWidth;
-
-        imageConverter =
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        ImageUtils.convertYUV420SPToARGB8888(bytes, previewWidth, previewHeight, rgbBytes);
-                    }
-                };
-
-        postInferenceCallback =
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        isProcessingFrame = false;
-                    }
-                };
-        processImage();
-    }
-
-    /**
      * Callback for Camera2 API
      */
     @Override
